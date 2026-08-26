@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FRead schemas</title>
+<style>
+:root {
+  --bg: #fbfaf7; --fg: #1c1a17; --muted: #5d5852; --rule: #e0dbd2;
+  --accent: #6b4f2a; --code-bg: #f0ece4;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #161513; --fg: #e8e4dc; --muted: #a19a90;
+    --rule: #322e29; --accent: #c9a367; --code-bg: #221f1b;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 3rem 1.5rem 6rem; background: var(--bg); color: var(--fg);
+  font: 16px/1.65 Georgia, "Iowan Old Style", "Times New Roman", serif;
+}
+main { max-width: 42rem; margin: 0 auto; }
+h1 { font-size: 1.9rem; line-height: 1.2; margin: 0 0 .25rem; font-weight: normal; }
+h2 {
+  font-size: 1.15rem; margin: 2.75rem 0 .75rem; font-weight: normal;
+  padding-bottom: .3rem; border-bottom: 1px solid var(--rule);
+}
+p { margin: 0 0 1rem; }
+a { color: var(--accent); }
+code, .mono {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: .875em; background: var(--code-bg); padding: .1em .35em; border-radius: 3px;
+}
+.lede { color: var(--muted); margin: 0 0 2.5rem; }
+table { border-collapse: collapse; width: 100%; margin: 0 0 1rem; }
+th, td { text-align: left; padding: .5rem .75rem .5rem 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-weight: normal; color: var(--muted); font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; }
+td.v { white-space: nowrap; }
+.url {
+  display: block; overflow-x: auto; white-space: pre; background: var(--code-bg);
+  padding: .8rem 1rem; border-radius: 4px; margin: 0 0 1.5rem;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: .8rem;
+}
+footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: .85rem; }
+</style>
+</head>
+<body>
+<main>
+<h1>FRead schemas</h1>
+<p class="lede">Published schemas for the file formats FRead reads and writes. Every version ever published stays at its own URL.</p>
+<h2>Formats</h2>
+<table>
+<tr><th>Format</th><th>Current</th><th>What it is</th></tr>
+<tr><td><a href="work/">work</a></td><td class="v"><code>4.0</code></td><td>The XML serialization of a work&#8217;s structure &mdash; divisions, blocks, anchors and illustrations. Companion works use this schema too. Exported for reading, and for hand-editing a detached work and reconciling it back.</td></tr>
+</table>
+<footer>Generated from the tooling that reads and writes these formats, so these pages and the schemas they describe cannot disagree.</footer>
+
+</main>
+</body>
+</html>

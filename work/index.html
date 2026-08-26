@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>fread work schema</title>
+<style>
+:root {
+  --bg: #fbfaf7; --fg: #1c1a17; --muted: #5d5852; --rule: #e0dbd2;
+  --accent: #6b4f2a; --code-bg: #f0ece4;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #161513; --fg: #e8e4dc; --muted: #a19a90;
+    --rule: #322e29; --accent: #c9a367; --code-bg: #221f1b;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; padding: 3rem 1.5rem 6rem; background: var(--bg); color: var(--fg);
+  font: 16px/1.65 Georgia, "Iowan Old Style", "Times New Roman", serif;
+}
+main { max-width: 42rem; margin: 0 auto; }
+h1 { font-size: 1.9rem; line-height: 1.2; margin: 0 0 .25rem; font-weight: normal; }
+h2 {
+  font-size: 1.15rem; margin: 2.75rem 0 .75rem; font-weight: normal;
+  padding-bottom: .3rem; border-bottom: 1px solid var(--rule);
+}
+p { margin: 0 0 1rem; }
+a { color: var(--accent); }
+code, .mono {
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: .875em; background: var(--code-bg); padding: .1em .35em; border-radius: 3px;
+}
+.lede { color: var(--muted); margin: 0 0 2.5rem; }
+table { border-collapse: collapse; width: 100%; margin: 0 0 1rem; }
+th, td { text-align: left; padding: .5rem .75rem .5rem 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-weight: normal; color: var(--muted); font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; }
+td.v { white-space: nowrap; }
+.url {
+  display: block; overflow-x: auto; white-space: pre; background: var(--code-bg);
+  padding: .8rem 1rem; border-radius: 4px; margin: 0 0 1.5rem;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; font-size: .8rem;
+}
+footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: .85rem; }
+</style>
+</head>
+<body>
+<main>
+<h1>fread work</h1>
+<p class="lede">The XML serialization of a work&#8217;s structure &mdash; divisions, blocks, anchors and illustrations. This page is the version history; the schemas themselves are linked below.</p>
+<h2>Current schema</h2>
+<span class="url">https://schema.fread.now/work/4.0/fread-work.xsd</span>
+<p>Exports name this URL in <code>xsi:noNamespaceSchemaLocation</code>, so a validating editor fetches it with no setup and there is nothing to keep beside the file. The version a file was written against is on its root element as <code>export-schema</code>.</p>
+<h2>All versions</h2>
+<table>
+<tr><th>Version</th><th>Schema</th></tr>
+<tr><td class="v"><code>4.0</code> &nbsp;<span style="color:var(--muted)">current</span></td><td><a href="4.0/fread-work.xsd">fread-work.xsd</a></td></tr>
+</table>
+<p>Two moving aliases exist as a convenience: <code>4/</code> serves the newest schema in the 4.x line, and <code>latest/</code> the newest overall. Neither is what an export stamps &mdash; a file names the exact version it was written against.</p>
+<p>The history below runs further back than this table does. Versions before publication began shipped only inside the tooling, so they have no URL to link to; they are listed because a file in hand may still name one.</p>
+<h2>What the two numbers mean</h2>
+<p><strong>MAJOR</strong> changes when a file written against an earlier version can no longer be imported as it stands — an element renamed, an attribute&#39;s meaning changed, a structural rule tightened. Re-export the work and redo the edits.</p>
+<p><strong>MINOR</strong> changes when the addition is one an older file survives unchanged: a new optional attribute, a new optional element, a new member of an open enum. <code>ingest-work import</code> accepts any file whose major matches and whose minor is at or below its own, so an edit in flight is not invalidated by a tool upgrade. It refuses a <em>higher</em> minor, because that file may carry an attribute this build would silently drop.</p>
+<p>A consequence worth stating: the published <code>.../work/&lt;major&gt;/</code> alias always serves the newest schema in that major line, and because minors are additive it still validates every older file in the line. The exact <code>&lt;major&gt;.&lt;minor&gt;/</code> URL is what an export stamps, so a file always names the schema it was actually written against.</p>
+<p>Versions before 4.0 predate this rule — every change was breaking, because the importer compared the version string for exact equality. They are listed with a <code>.0</code> minor for consistency.</p>
+<h2>4.0</h2>
+<p>Divisions gained <code>print-placement</code>: how the division head sat on the printed page (<code>new-page</code> | <code>continues</code> | <code>own-leaf</code>), so a Part head sharing its page with the chapter below it survives the round trip. Absent means unspecified and reads as <code>new-page</code> — a distinct state, since no parser writes it and its presence means an operator read the page.</p>
+<p>Also the first version published to a URL. Earlier versions shipped only as a file written out beside the book by <code>ingest-work schema --out</code>, which is still how you work offline.</p>
+<p>The format was named <code>fread-content-export</code> until publication, and files carrying that stamp are still accepted — the old name denotes an identical document shape. The version deliberately did not move for the rename, because the version numbers what the document <em>contains</em>, and that did not change. The new name says what the file holds rather than what was done to it, which is what makes room for the layer and bridge schemas beside it.</p>
+<h2>3.0</h2>
+<p>Illustrations became round-trippable. They gained <code>item-id</code> (their real identity — see <code>WorkIllustration.ItemID</code> for why blob-id could not serve), <code>print-placement</code>, and <code>src</code> (the operator&#39;s insert handle, resolved against a sidecar directory beside the file). Before this they exported but were silently ignored on import: deleting one from the file did nothing, with no warning.</p>
+<h2>2.0</h2>
+<p>Block content became the AUTHORED form (<code>text_html</code>, falling back to <code>text</code> and marked <code>text-form=&#34;plain&#34;</code>). Illustrations began reporting the role in effect plus a <code>role-pending</code> attribute when an override has not been applied yet.</p>
+<h2>1.0</h2>
+<p>Block content was <code>content_block.text</code> (plain). Lossy: 21% of the corpus carries markup that lives only in <code>text_html</code>, so a round trip through 1.0 would have stripped emphasis and <code>&lt;br&gt;</code> lineation from every block touched.</p>
+<footer>Generated from the tooling that reads and writes these formats, so these pages and the schemas they describe cannot disagree. <a href="CHANGELOG.md">Changelog source</a>.</footer>
+
+</main>
+</body>
+</html>
