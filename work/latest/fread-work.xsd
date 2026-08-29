@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  fread work — schema version 4.0.
+  fread work — schema version 4.1.
 
   The XML serialization of a WORK's structure: divisions, blocks, anchors and
   illustrations. Companion works use this same schema — a companion work is
@@ -8,7 +8,7 @@
   in another work, not in content shape. Layers and bridges get their own
   schemas alongside this one; they are shaped differently.
 
-  Published at https://schema.fread.now/work/4.0/fread-work.xsd and named there
+  Published at https://schema.fread.now/work/4.1/fread-work.xsd and named there
   by every export, so a validating editor finds it with no setup. Every version
   ever published stays at its own URL; the version history and what the two
   numbers promise are at https://schema.fread.now/work/.
@@ -150,6 +150,41 @@
     <xs:union memberTypes="knownPrintPlacement xs:string"/>
   </xs:simpleType>
 
+  <!-- Facsimile provenance: what a scan of an original edition reproduces.
+       FACTS about the scan, deliberately not instructions for rendering it.
+       A facsimile is by definition not part of the core work, so whether it is
+       shown full-page or reduced, before the chapter title or after, is an
+       aesthetic and functional choice — recording the choice here would freeze
+       one renderer's taste into every operator's file, while recording what the
+       scan IS lets the choice be derived and revisited with no migration.
+
+       Neither is derivable from anything else recorded: a whole-page scan
+       attached to a chapter could equally be a facing plate rather than that
+       chapter's opening page. Absent on anything that is not a facsimile. -->
+  <xs:simpleType name="knownFacsimileExtent">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="page"/>
+      <xs:enumeration value="spread"/>
+      <xs:enumeration value="detail"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="facsimileExtent">
+    <xs:union memberTypes="knownFacsimileExtent xs:string"/>
+  </xs:simpleType>
+
+  <xs:simpleType name="knownFacsimileDepicts">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="division-open"/>
+      <xs:enumeration value="title-page"/>
+      <xs:enumeration value="text"/>
+      <xs:enumeration value="plate"/>
+      <xs:enumeration value="binding"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="facsimileDepicts">
+    <xs:union memberTypes="knownFacsimileDepicts xs:string"/>
+  </xs:simpleType>
+
   <!-- How a DIVISION head sat on the printed page. Same idea as the
        illustration attribute above and deliberately the same attribute name,
        but a different vocabulary: an image sits on a page, a division head
@@ -183,6 +218,8 @@
     <xs:attribute name="role"            type="imageRole"/>
     <xs:attribute name="role-pending"    type="imageRole"/>
     <xs:attribute name="print-placement" type="printPlacement"/>
+    <xs:attribute name="extent"  type="facsimileExtent"/>
+    <xs:attribute name="depicts" type="facsimileDepicts"/>
     <xs:attribute name="alt"     type="xs:string"/>
     <xs:attribute name="caption" type="xs:string"/>
   </xs:complexType>

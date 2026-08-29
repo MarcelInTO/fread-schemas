@@ -34,6 +34,27 @@ Versions before 4.0 predate this rule — every change was breaking, because the
 importer compared the version string for exact equality. They are listed with a
 `.0` minor for consistency.
 
+## 4.1
+
+Illustrations gained `extent` and `depicts`: facsimile provenance — what portion
+of the source edition a scan reproduces (`page` | `spread` | `detail`), and what
+that portion holds (`division-open` | `title-page` | `text` | `plate` |
+`binding`). Both optional, both open enums, and absent on anything that is not a
+facsimile.
+
+They are **facts about the scan, not instructions for showing it**. A facsimile
+sits outside the core work, so how it is presented — full page or reduced,
+before the chapter title or after — is an aesthetic and functional choice rather
+than one any convention dictates. Recording what the scan *is* lets a renderer
+derive that choice and revisit it later with no migration; recording the choice
+itself would freeze one renderer's taste into every operator's file. That is why
+these sit beside `role` rather than inside `presentation`, which is the
+instruction object.
+
+Neither is derivable from what is already recorded: a whole-page scan attached
+to a chapter could equally be a facing plate rather than that chapter's opening
+page.
+
 ## 4.0
 
 Divisions gained `print-placement`: how the division head sat on the printed
