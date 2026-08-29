@@ -34,6 +34,30 @@ Versions before 4.0 predate this rule — every change was breaking, because the
 importer compared the version string for exact equality. They are listed with a
 `.0` minor for consistency.
 
+## 4.2
+
+The `knownBlockKind` and `knownDivisionKind` enumerations caught up with the
+kinds the system already produces. Both are unions with `xs:string`, so every
+one of these already validated and no file changes meaning — what changed is
+that an editor now offers them, and `ingest-work import` no longer warns about
+them (that warning is new in this version too, and is what made the drift worth
+closing rather than noting).
+
+Divisions gained `postscript`, `afterword`, `appendix`, `letter` and `section`.
+The first three are what the shared classifier types a back-matter heading as;
+`letter` is a Frankenstein-style framing letter, which the chap-padded parser
+has emitted since `#126`; `section` is what the Folger parser calls an untyped
+structural container, and the Sonnets carry two.
+
+Blocks gained `list`, `definition-list` and `table` — the three container shapes
+the Gutenberg block emitter has produced since `#116`. They are deliberately
+absent from `ingest-override kinds`, which is an *operator's* menu and lists
+only kinds the reader renders distinctly; this enumeration is the vocabulary of
+what a work file may legitimately contain, which is a wider set. `#199`.
+
+Nothing was added speculatively: every kind here is emitted by a parser today,
+and all but `afterword` have live rows in the catalogue.
+
 ## 4.1
 
 Illustrations gained `extent` and `depicts`: facsimile provenance — what portion

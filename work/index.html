@@ -50,12 +50,13 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--rule);
 <h1>fread work</h1>
 <p class="lede">The XML serialization of a work&#8217;s structure &mdash; divisions, blocks, anchors and illustrations. This page is the version history; the schemas themselves are linked below.</p>
 <h2>Current schema</h2>
-<span class="url">https://schema.fread.now/work/4.1/fread-work.xsd</span>
+<span class="url">https://schema.fread.now/work/4.2/fread-work.xsd</span>
 <p>Exports name this URL in <code>xsi:noNamespaceSchemaLocation</code>, so a validating editor fetches it with no setup and there is nothing to keep beside the file. The version a file was written against is on its root element as <code>export-schema</code>.</p>
 <h2>All versions</h2>
 <table>
 <tr><th>Version</th><th>Schema</th></tr>
-<tr><td class="v"><code>4.1</code> &nbsp;<span style="color:var(--muted)">current</span></td><td><a href="4.1/fread-work.xsd">fread-work.xsd</a></td></tr>
+<tr><td class="v"><code>4.2</code> &nbsp;<span style="color:var(--muted)">current</span></td><td><a href="4.2/fread-work.xsd">fread-work.xsd</a></td></tr>
+<tr><td class="v"><code>4.1</code></td><td><a href="4.1/fread-work.xsd">fread-work.xsd</a></td></tr>
 <tr><td class="v"><code>4.0</code></td><td><a href="4.0/fread-work.xsd">fread-work.xsd</a></td></tr>
 </table>
 <p>Two moving aliases exist as a convenience: <code>4/</code> serves the newest schema in the 4.x line, and <code>latest/</code> the newest overall. Neither is what an export stamps &mdash; a file names the exact version it was written against.</p>
@@ -65,6 +66,11 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--rule);
 <p><strong>MINOR</strong> changes when the addition is one an older file survives unchanged: a new optional attribute, a new optional element, a new member of an open enum. <code>ingest-work import</code> accepts any file whose major matches and whose minor is at or below its own, so an edit in flight is not invalidated by a tool upgrade. It refuses a <em>higher</em> minor, because that file may carry an attribute this build would silently drop.</p>
 <p>A consequence worth stating: the published <code>.../work/&lt;major&gt;/</code> alias always serves the newest schema in that major line, and because minors are additive it still validates every older file in the line. The exact <code>&lt;major&gt;.&lt;minor&gt;/</code> URL is what an export stamps, so a file always names the schema it was actually written against.</p>
 <p>Versions before 4.0 predate this rule — every change was breaking, because the importer compared the version string for exact equality. They are listed with a <code>.0</code> minor for consistency.</p>
+<h2>4.2</h2>
+<p>The <code>knownBlockKind</code> and <code>knownDivisionKind</code> enumerations caught up with the kinds the system already produces. Both are unions with <code>xs:string</code>, so every one of these already validated and no file changes meaning — what changed is that an editor now offers them, and <code>ingest-work import</code> no longer warns about them (that warning is new in this version too, and is what made the drift worth closing rather than noting).</p>
+<p>Divisions gained <code>postscript</code>, <code>afterword</code>, <code>appendix</code>, <code>letter</code> and <code>section</code>. The first three are what the shared classifier types a back-matter heading as; <code>letter</code> is a Frankenstein-style framing letter, which the chap-padded parser has emitted since <code>#126</code>; <code>section</code> is what the Folger parser calls an untyped structural container, and the Sonnets carry two.</p>
+<p>Blocks gained <code>list</code>, <code>definition-list</code> and <code>table</code> — the three container shapes the Gutenberg block emitter has produced since <code>#116</code>. They are deliberately absent from <code>ingest-override kinds</code>, which is an <em>operator&#39;s</em> menu and lists only kinds the reader renders distinctly; this enumeration is the vocabulary of what a work file may legitimately contain, which is a wider set. <code>#199</code>.</p>
+<p>Nothing was added speculatively: every kind here is emitted by a parser today, and all but <code>afterword</code> have live rows in the catalogue.</p>
 <h2>4.1</h2>
 <p>Illustrations gained <code>extent</code> and <code>depicts</code>: facsimile provenance — what portion of the source edition a scan reproduces (<code>page</code> | <code>spread</code> | <code>detail</code>), and what that portion holds (<code>division-open</code> | <code>title-page</code> | <code>text</code> | <code>plate</code> | <code>binding</code>). Both optional, both open enums, and absent on anything that is not a facsimile.</p>
 <p>They are <strong>facts about the scan, not instructions for showing it</strong>. A facsimile sits outside the core work, so how it is presented — full page or reduced, before the chapter title or after — is an aesthetic and functional choice rather than one any convention dictates. Recording what the scan <em>is</em> lets a renderer derive that choice and revisit it later with no migration; recording the choice itself would freeze one renderer&#39;s taste into every operator&#39;s file. That is why these sit beside <code>role</code> rather than inside <code>presentation</code>, which is the instruction object.</p>

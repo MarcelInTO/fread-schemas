@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  fread work — schema version 4.1.
+  fread work — schema version 4.2.
 
   The XML serialization of a WORK's structure: divisions, blocks, anchors and
   illustrations. Companion works use this same schema — a companion work is
@@ -8,7 +8,7 @@
   in another work, not in content shape. Layers and bridges get their own
   schemas alongside this one; they are shaped differently.
 
-  Published at https://schema.fread.now/work/4.1/fread-work.xsd and named there
+  Published at https://schema.fread.now/work/4.2/fread-work.xsd and named there
   by every export, so a validating editor finds it with no setup. Every version
   ever published stays at its own URL; the version history and what the two
   numbers promise are at https://schema.fread.now/work/.
@@ -66,6 +66,9 @@
       <xs:enumeration value="lineated"/>
       <xs:enumeration value="preformatted"/>
       <xs:enumeration value="divider"/>
+      <xs:enumeration value="list"/>
+      <xs:enumeration value="definition-list"/>
+      <xs:enumeration value="table"/>
       <xs:enumeration value="stanza-break"/>
       <xs:enumeration value="verse-line"/>
       <xs:enumeration value="verse-title"/>
@@ -112,6 +115,11 @@
       <xs:enumeration value="prelude"/>
       <xs:enumeration value="epilogue"/>
       <xs:enumeration value="coda"/>
+      <xs:enumeration value="postscript"/>
+      <xs:enumeration value="afterword"/>
+      <xs:enumeration value="appendix"/>
+      <xs:enumeration value="letter"/>
+      <xs:enumeration value="section"/>
       <xs:enumeration value="act"/>
       <xs:enumeration value="scene"/>
       <xs:enumeration value="induction"/>
