@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  fread work — schema version 4.2.
+  fread work — schema version 4.3.
 
   The XML serialization of a WORK's structure: divisions, blocks, anchors and
   illustrations. Companion works use this same schema — a companion work is
@@ -8,7 +8,7 @@
   in another work, not in content shape. Layers and bridges get their own
   schemas alongside this one; they are shaped differently.
 
-  Published at https://schema.fread.now/work/4.2/fread-work.xsd and named there
+  Published at https://schema.fread.now/work/4.3/fread-work.xsd and named there
   by every export, so a validating editor finds it with no setup. Every version
   ever published stays at its own URL; the version history and what the two
   numbers promise are at https://schema.fread.now/work/.
@@ -132,6 +132,21 @@
   </xs:simpleType>
   <xs:simpleType name="divisionKind">
     <xs:union memberTypes="knownDivisionKind xs:string"/>
+  </xs:simpleType>
+
+  <!-- projection marks a READ-ONLY view of the work; ingest-work import refuses
+       a file that carries it, whatever the value. plain-text: every block's
+       content is content_block.text — the derived form the reader shows and its
+       character offsets index — in place of the authored text_html, for tools
+       that compute positions over the reader's text. Written only by
+       `ingest-work export` with the plain-text flag, never by hand. A closed list on
+       purpose, unlike kind and role: a projection is something this tooling
+       produces, so an unlisted value is a typo rather than material awaiting a
+       design. -->
+  <xs:simpleType name="projection">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="plain-text"/>
+    </xs:restriction>
   </xs:simpleType>
 
   <xs:simpleType name="knownImageRole">
@@ -310,6 +325,7 @@
            Neither is yours to edit. -->
       <xs:attribute name="export-scope" type="xs:string"/>
       <xs:attribute name="export-state" type="xs:string"/>
+      <xs:attribute name="projection"   type="projection"/>
       <xs:attribute name="title"        type="xs:string"/>
       <xs:attribute name="attribution"  type="xs:string"/>
       <xs:attribute name="rights-state" type="xs:string"/>

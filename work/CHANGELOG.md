@@ -34,6 +34,31 @@ Versions before 4.0 predate this rule — every change was breaking, because the
 importer compared the version string for exact equality. They are listed with a
 `.0` minor for consistency.
 
+## 4.3
+
+The root gained `projection`, marking a file as a **read-only view** of the
+work that `ingest-work import` refuses outright. One value so far:
+`plain-text`, written by `ingest-work export --plain-text`, in which every
+block's content is `content_block.text` — the derived form the reader shows and
+its character offsets index — instead of the authored `text_html`. Blocks in a
+projection carry no `text-form` marker, since every one is plain and the
+marker's meaning ("this block has no HTML form") would be false.
+
+It exists for tools that compute positions over the reader's text — first the
+audiobook alignment tool (`FreadClassicAudioAlignment.md` §6,
+`fread/fread-issues#250`). The plain form is deliberately absent from an
+ordinary export because it is derived, and a consumer cannot rebuild it: the
+derivation has changed over the corpus's life, so tag-stripping `text_html`
+disagrees with the stored text for a fifth of all blocks. Handing it out in a
+file that can never be written back is what makes that safe — importing one
+would replace every block's authored form with its tag-stripped text.
+
+A projection's `export-state` is the **authored** export's for the same
+revision, so an artifact computed over it can be matched to the file an
+operator would edit. Optional attribute, closed enumeration (a projection is
+something the tooling produces, so an unlisted value is a typo); older files
+are unaffected.
+
 ## 4.2
 
 The `knownBlockKind` and `knownDivisionKind` enumerations caught up with the
