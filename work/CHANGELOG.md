@@ -34,6 +34,25 @@ Versions before 4.0 predate this rule — every change was breaking, because the
 importer compared the version string for exact equality. They are listed with a
 `.0` minor for consistency.
 
+## 4.4
+
+`knownBlockKind` gained the title page's own stack: `title`, `subtitle` and
+`byline`. The Gutenberg parser assigns them from the signal → semantics
+table (`fread/fread-issues#276`) — the source's classes (`p.author`,
+`div.title-main`, `div.byline`) where a template spells them, and the stack's
+shape where it does not: the first heading is the title, a heading that
+reads "By …" or names a creator the package lists is the byline, and what
+sits between is a subtitle. Before this the reader took the first block of a
+title-page division as the title and every later one as a byline line, which
+put Huckleberry Finn's subtitle "(Tom Sawyer's Comrade)" in the byline. A
+`subtitle` is the subtitle of the ENCLOSING division, so under a chapter head
+it is that chapter's (`#141`).
+
+Three kinds in one bump rather than three bumps, per the minting rule
+(workspace memory `feedback_minting_a_content_kind`). The table's other
+targets — footnote, sidenote, caption, imprint, transcriber-note — are still
+on inert seed rows and join the enumeration when their rows are verified.
+
 ## 4.3
 
 The root gained `projection`, marking a file as a **read-only view** of the
