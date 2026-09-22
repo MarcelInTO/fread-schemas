@@ -34,6 +34,23 @@ Versions before 4.0 predate this rule — every change was breaking, because the
 importer compared the version string for exact equality. They are listed with a
 `.0` minor for consistency.
 
+## 4.5
+
+`knownBlockKind` gained `transcriber-note`: the transcriber's own matter, as
+distinct from the author's `footnote` — the DP template's cover credit ("The
+cover image was created by the transcriber and is placed in the public
+domain", 2,112 works on the mirror, mostly a bare `<p>`), a note on the
+transcription. It is the signal table's Apparatus role made real (the
+2026-09-10 decision recorded on the `transcriber-note` row): typed and kept,
+never dropped at ingest, because a drop is the one thing a re-ingest cannot
+undo on a detached work; the reader sets it as apparatus, and an operator
+can delete or retype it. The Gutenberg parser recognizes the cover credit by
+shape (`transnote.go`); the class row (`div.transnote`, `p.tn`, `div.mynote`,
+…) stays Seed until a fixture verifies it, and lands on the same kind.
+
+Found on the illustrated Adventures of Sherlock Holmes (48320), whose title
+page opened on the credit as a prose line.
+
 ## 4.4
 
 `knownBlockKind` gained the title page's own stack: `title`, `subtitle` and

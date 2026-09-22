@@ -50,12 +50,13 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--rule);
 <h1>fread work</h1>
 <p class="lede">The XML serialization of a work&#8217;s structure &mdash; divisions, blocks, anchors and illustrations. This page is the version history; the schemas themselves are linked below.</p>
 <h2>Current schema</h2>
-<span class="url">https://schema.fread.now/work/4.4/fread-work.xsd</span>
+<span class="url">https://schema.fread.now/work/4.5/fread-work.xsd</span>
 <p>Exports name this URL in <code>xsi:noNamespaceSchemaLocation</code>, so a validating editor fetches it with no setup and there is nothing to keep beside the file. The version a file was written against is on its root element as <code>export-schema</code>.</p>
 <h2>All versions</h2>
 <table>
 <tr><th>Version</th><th>Schema</th></tr>
-<tr><td class="v"><code>4.4</code> &nbsp;<span style="color:var(--muted)">current</span></td><td><a href="4.4/fread-work.xsd">fread-work.xsd</a></td></tr>
+<tr><td class="v"><code>4.5</code> &nbsp;<span style="color:var(--muted)">current</span></td><td><a href="4.5/fread-work.xsd">fread-work.xsd</a></td></tr>
+<tr><td class="v"><code>4.4</code></td><td><a href="4.4/fread-work.xsd">fread-work.xsd</a></td></tr>
 <tr><td class="v"><code>4.3</code></td><td><a href="4.3/fread-work.xsd">fread-work.xsd</a></td></tr>
 <tr><td class="v"><code>4.2</code></td><td><a href="4.2/fread-work.xsd">fread-work.xsd</a></td></tr>
 <tr><td class="v"><code>4.1</code></td><td><a href="4.1/fread-work.xsd">fread-work.xsd</a></td></tr>
@@ -68,6 +69,9 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--rule);
 <p><strong>MINOR</strong> changes when the addition is one an older file survives unchanged: a new optional attribute, a new optional element, a new member of an open enum. <code>ingest-work import</code> accepts any file whose major matches and whose minor is at or below its own, so an edit in flight is not invalidated by a tool upgrade. It refuses a <em>higher</em> minor, because that file may carry an attribute this build would silently drop.</p>
 <p>A consequence worth stating: the published <code>.../work/&lt;major&gt;/</code> alias always serves the newest schema in that major line, and because minors are additive it still validates every older file in the line. The exact <code>&lt;major&gt;.&lt;minor&gt;/</code> URL is what an export stamps, so a file always names the schema it was actually written against.</p>
 <p>Versions before 4.0 predate this rule — every change was breaking, because the importer compared the version string for exact equality. They are listed with a <code>.0</code> minor for consistency.</p>
+<h2>4.5</h2>
+<p><code>knownBlockKind</code> gained <code>transcriber-note</code>: the transcriber&#39;s own matter, as distinct from the author&#39;s <code>footnote</code> — the DP template&#39;s cover credit (&#34;The cover image was created by the transcriber and is placed in the public domain&#34;, 2,112 works on the mirror, mostly a bare <code>&lt;p&gt;</code>), a note on the transcription. It is the signal table&#39;s Apparatus role made real (the 2026-09-10 decision recorded on the <code>transcriber-note</code> row): typed and kept, never dropped at ingest, because a drop is the one thing a re-ingest cannot undo on a detached work; the reader sets it as apparatus, and an operator can delete or retype it. The Gutenberg parser recognizes the cover credit by shape (<code>transnote.go</code>); the class row (<code>div.transnote</code>, <code>p.tn</code>, <code>div.mynote</code>, …) stays Seed until a fixture verifies it, and lands on the same kind.</p>
+<p>Found on the illustrated Adventures of Sherlock Holmes (48320), whose title page opened on the credit as a prose line.</p>
 <h2>4.4</h2>
 <p><code>knownBlockKind</code> gained the title page&#39;s own stack: <code>title</code>, <code>subtitle</code> and <code>byline</code>. The Gutenberg parser assigns them from the signal → semantics table (<code>fread/fread-issues#276</code>) — the source&#39;s classes (<code>p.author</code>, <code>div.title-main</code>, <code>div.byline</code>) where a template spells them, and the stack&#39;s shape where it does not: the first heading is the title, a heading that reads &#34;By …&#34; or names a creator the package lists is the byline, and what sits between is a subtitle. Before this the reader took the first block of a title-page division as the title and every later one as a byline line, which put Huckleberry Finn&#39;s subtitle &#34;(Tom Sawyer&#39;s Comrade)&#34; in the byline. A <code>subtitle</code> is the subtitle of the ENCLOSING division, so under a chapter head it is that chapter&#39;s (<code>#141</code>).</p>
 <p>Three kinds in one bump rather than three bumps, per the minting rule (workspace memory <code>feedback_minting_a_content_kind</code>). The table&#39;s other targets — footnote, sidenote, caption, imprint, transcriber-note — are still on inert seed rows and join the enumeration when their rows are verified.</p>
