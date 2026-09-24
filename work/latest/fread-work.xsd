@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  fread work — schema version 4.5.
+  fread work — schema version 4.6.
 
   The XML serialization of a WORK's structure: divisions, blocks, anchors and
   illustrations. Companion works use this same schema — a companion work is
@@ -8,7 +8,7 @@
   in another work, not in content shape. Layers and bridges get their own
   schemas alongside this one; they are shaped differently.
 
-  Published at https://schema.fread.now/work/4.5/fread-work.xsd and named there
+  Published at https://schema.fread.now/work/4.6/fread-work.xsd and named there
   by every export, so a validating editor finds it with no setup. Every version
   ever published stays at its own URL; the version history and what the two
   numbers promise are at https://schema.fread.now/work/.
@@ -65,6 +65,7 @@
       <xs:enumeration value="headline"/>
       <xs:enumeration value="lineated"/>
       <xs:enumeration value="preformatted"/>
+      <xs:enumeration value="tabular"/>
       <xs:enumeration value="divider"/>
       <xs:enumeration value="list"/>
       <xs:enumeration value="definition-list"/>

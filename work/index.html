@@ -50,12 +50,13 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--rule);
 <h1>fread work</h1>
 <p class="lede">The XML serialization of a work&#8217;s structure &mdash; divisions, blocks, anchors and illustrations. This page is the version history; the schemas themselves are linked below.</p>
 <h2>Current schema</h2>
-<span class="url">https://schema.fread.now/work/4.5/fread-work.xsd</span>
+<span class="url">https://schema.fread.now/work/4.6/fread-work.xsd</span>
 <p>Exports name this URL in <code>xsi:noNamespaceSchemaLocation</code>, so a validating editor fetches it with no setup and there is nothing to keep beside the file. The version a file was written against is on its root element as <code>export-schema</code>.</p>
 <h2>All versions</h2>
 <table>
 <tr><th>Version</th><th>Schema</th></tr>
-<tr><td class="v"><code>4.5</code> &nbsp;<span style="color:var(--muted)">current</span></td><td><a href="4.5/fread-work.xsd">fread-work.xsd</a></td></tr>
+<tr><td class="v"><code>4.6</code> &nbsp;<span style="color:var(--muted)">current</span></td><td><a href="4.6/fread-work.xsd">fread-work.xsd</a></td></tr>
+<tr><td class="v"><code>4.5</code></td><td><a href="4.5/fread-work.xsd">fread-work.xsd</a></td></tr>
 <tr><td class="v"><code>4.4</code></td><td><a href="4.4/fread-work.xsd">fread-work.xsd</a></td></tr>
 <tr><td class="v"><code>4.3</code></td><td><a href="4.3/fread-work.xsd">fread-work.xsd</a></td></tr>
 <tr><td class="v"><code>4.2</code></td><td><a href="4.2/fread-work.xsd">fread-work.xsd</a></td></tr>
@@ -69,6 +70,10 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--rule);
 <p><strong>MINOR</strong> changes when the addition is one an older file survives unchanged: a new optional attribute, a new optional element, a new member of an open enum. <code>ingest-work import</code> accepts any file whose major matches and whose minor is at or below its own, so an edit in flight is not invalidated by a tool upgrade. It refuses a <em>higher</em> minor, because that file may carry an attribute this build would silently drop.</p>
 <p>A consequence worth stating: the published <code>.../work/&lt;major&gt;/</code> alias always serves the newest schema in that major line, and because minors are additive it still validates every older file in the line. The exact <code>&lt;major&gt;.&lt;minor&gt;/</code> URL is what an export stamps, so a file always names the schema it was actually written against.</p>
 <p>Versions before 4.0 predate this rule — every change was breaking, because the importer compared the version string for exact equality. They are listed with a <code>.0</code> minor for consistency.</p>
+<h2>4.6</h2>
+<p><code>knownBlockKind</code> gained <code>tabular</code>: text set in fixed-width columns — a table, a list in columns, a genealogy drawn in type — kept verbatim, each line&#39;s own indentation and the spaces inside it included, so the reader can draw it in a fixed-width face and the columns line up. Gutenberg sets most of its tables this way, as plain text in a <code>&lt;pre&gt;</code> or a <code>div.pre</code>, and until now the Gutenberg parser split them into one verse line per row or stored them as a paragraph, which the reader drew with the spaces collapsed. Distinct from <code>preformatted</code>, where the leading indentation is the shape (Alice&#39;s Mouse&#39;s Tale) and the body face keeps it.</p>
+<p>The Gutenberg parser recognizes it by the column gap — three or more spaces inside a line on at least half of a block&#39;s lines (<code>tabular.go</code>); an operator can assign it with <code>ingest-override set --kind tabular</code>.</p>
+<p>Found on The Wealth of Nations (3300), whose price tables arrived run together (#411).</p>
 <h2>4.5</h2>
 <p><code>knownBlockKind</code> gained <code>transcriber-note</code>: the transcriber&#39;s own matter, as distinct from the author&#39;s <code>footnote</code> — the DP template&#39;s cover credit (&#34;The cover image was created by the transcriber and is placed in the public domain&#34;, 2,112 works on the mirror, mostly a bare <code>&lt;p&gt;</code>), a note on the transcription. It is the signal table&#39;s Apparatus role made real (the 2026-09-10 decision recorded on the <code>transcriber-note</code> row): typed and kept, never dropped at ingest, because a drop is the one thing a re-ingest cannot undo on a detached work; the reader sets it as apparatus, and an operator can delete or retype it. The Gutenberg parser recognizes the cover credit by shape (<code>transnote.go</code>); the class row (<code>div.transnote</code>, <code>p.tn</code>, <code>div.mynote</code>, …) stays Seed until a fixture verifies it, and lands on the same kind.</p>
 <p>Found on the illustrated Adventures of Sherlock Holmes (48320), whose title page opened on the credit as a prose line.</p>

@@ -34,6 +34,25 @@ Versions before 4.0 predate this rule — every change was breaking, because the
 importer compared the version string for exact equality. They are listed with a
 `.0` minor for consistency.
 
+## 4.6
+
+`knownBlockKind` gained `tabular`: text set in fixed-width columns — a
+table, a list in columns, a genealogy drawn in type — kept verbatim, each
+line's own indentation and the spaces inside it included, so the reader can
+draw it in a fixed-width face and the columns line up. Gutenberg sets most
+of its tables this way, as plain text in a `<pre>` or a `div.pre`, and
+until now the Gutenberg parser split them into one verse line per row or
+stored them as a paragraph, which the reader drew with the spaces
+collapsed. Distinct from `preformatted`, where the leading indentation is
+the shape (Alice's Mouse's Tale) and the body face keeps it.
+
+The Gutenberg parser recognizes it by the column gap — three or more spaces
+inside a line on at least half of a block's lines (`tabular.go`); an
+operator can assign it with `ingest-override set --kind tabular`.
+
+Found on The Wealth of Nations (3300), whose price tables arrived run
+together (#411).
+
 ## 4.5
 
 `knownBlockKind` gained `transcriber-note`: the transcriber's own matter, as
