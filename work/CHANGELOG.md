@@ -34,6 +34,23 @@ Versions before 4.0 predate this rule — every change was breaking, because the
 importer compared the version string for exact equality. They are listed with a
 `.0` minor for consistency.
 
+## 4.7
+
+`knownDivisionKind` gained `chant`: a numbered division of a long poem
+that the work itself heads "Chant", the French word for one. Like `canto`
+and `stave`, it composes its word with the division's `number`
+("Chant 1"), so the reader prints the word the book prints. It is its
+own kind rather than `book` or `canto` because neither English word fits
+every work that uses it: Homer's chants are books, and Dante's, Ariosto's
+and Byron's are cantos.
+
+The Gutenberg parser assigns it from a head that opens "Chant" and a
+numeral; an operator can assign it with `ingest-override set --kind
+chant`.
+
+Found on Leconte de Lisle's *Iliade* (14285), whose 24 chants arrived as
+chapters with no number (#508).
+
 ## 4.6
 
 `knownBlockKind` gained `tabular`: text set in fixed-width columns — a
