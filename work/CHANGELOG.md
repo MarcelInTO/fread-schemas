@@ -34,6 +34,25 @@ Versions before 4.0 predate this rule — every change was breaking, because the
 importer compared the version string for exact equality. They are listed with a
 `.0` minor for consistency.
 
+## 4.8
+
+`knownBlockKind` gained `argument-line`: one line of an argument set in
+verse. An `argument` is a block of prose, and a book that opens on a summary
+in couplets — Chapman's *Iliad* sets each book's argument so, under "THE
+ARGUMENT" and "ANOTHER ARGUMENT" — holds its argument as verse lines, one
+block each. Typed `argument`, those lines would read as a stack of separate
+paragraphs, and nothing stored would tell them from an argument of several
+prose paragraphs; typed `verse-line`, they read as the poem. A run of
+`argument-line` blocks is one argument set as a stanza: the argument's
+register, the verse line's lineation.
+
+Like `argument`, it is the operator's to assign (`ingest-override set --kind
+argument-line`); no parser emits it. The text aligner leaves it out with
+`argument`, as apparatus (TranslationBridges §4).
+
+Found on Chapman's *Iliad* (51355), whose 310 argument lines were
+`verse-line` (fread/fread-issues#553, R8 of #506).
+
 ## 4.7
 
 `knownDivisionKind` gained `chant`: a numbered division of a long poem

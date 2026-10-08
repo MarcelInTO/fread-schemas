@@ -50,12 +50,13 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--rule);
 <h1>fread work</h1>
 <p class="lede">The XML serialization of a work&#8217;s structure &mdash; divisions, blocks, anchors and illustrations. This page is the version history; the schemas themselves are linked below.</p>
 <h2>Current schema</h2>
-<span class="url">https://schema.fread.now/work/4.7/fread-work.xsd</span>
+<span class="url">https://schema.fread.now/work/4.8/fread-work.xsd</span>
 <p>Exports name this URL in <code>xsi:noNamespaceSchemaLocation</code>, so a validating editor fetches it with no setup and there is nothing to keep beside the file. The version a file was written against is on its root element as <code>export-schema</code>.</p>
 <h2>All versions</h2>
 <table>
 <tr><th>Version</th><th>Schema</th></tr>
-<tr><td class="v"><code>4.7</code> &nbsp;<span style="color:var(--muted)">current</span></td><td><a href="4.7/fread-work.xsd">fread-work.xsd</a></td></tr>
+<tr><td class="v"><code>4.8</code> &nbsp;<span style="color:var(--muted)">current</span></td><td><a href="4.8/fread-work.xsd">fread-work.xsd</a></td></tr>
+<tr><td class="v"><code>4.7</code></td><td><a href="4.7/fread-work.xsd">fread-work.xsd</a></td></tr>
 <tr><td class="v"><code>4.6</code></td><td><a href="4.6/fread-work.xsd">fread-work.xsd</a></td></tr>
 <tr><td class="v"><code>4.5</code></td><td><a href="4.5/fread-work.xsd">fread-work.xsd</a></td></tr>
 <tr><td class="v"><code>4.4</code></td><td><a href="4.4/fread-work.xsd">fread-work.xsd</a></td></tr>
@@ -71,6 +72,10 @@ footer { margin-top: 4rem; padding-top: 1rem; border-top: 1px solid var(--rule);
 <p><strong>MINOR</strong> changes when the addition is one an older file survives unchanged: a new optional attribute, a new optional element, a new member of an open enum. <code>ingest-work import</code> accepts any file whose major matches and whose minor is at or below its own, so an edit in flight is not invalidated by a tool upgrade. It refuses a <em>higher</em> minor, because that file may carry an attribute this build would silently drop.</p>
 <p>A consequence worth stating: the published <code>.../work/&lt;major&gt;/</code> alias always serves the newest schema in that major line, and because minors are additive it still validates every older file in the line. The exact <code>&lt;major&gt;.&lt;minor&gt;/</code> URL is what an export stamps, so a file always names the schema it was actually written against.</p>
 <p>Versions before 4.0 predate this rule — every change was breaking, because the importer compared the version string for exact equality. They are listed with a <code>.0</code> minor for consistency.</p>
+<h2>4.8</h2>
+<p><code>knownBlockKind</code> gained <code>argument-line</code>: one line of an argument set in verse. An <code>argument</code> is a block of prose, and a book that opens on a summary in couplets — Chapman&#39;s <em>Iliad</em> sets each book&#39;s argument so, under &#34;THE ARGUMENT&#34; and &#34;ANOTHER ARGUMENT&#34; — holds its argument as verse lines, one block each. Typed <code>argument</code>, those lines would read as a stack of separate paragraphs, and nothing stored would tell them from an argument of several prose paragraphs; typed <code>verse-line</code>, they read as the poem. A run of <code>argument-line</code> blocks is one argument set as a stanza: the argument&#39;s register, the verse line&#39;s lineation.</p>
+<p>Like <code>argument</code>, it is the operator&#39;s to assign (<code>ingest-override set --kind argument-line</code>); no parser emits it. The text aligner leaves it out with <code>argument</code>, as apparatus (TranslationBridges §4).</p>
+<p>Found on Chapman&#39;s <em>Iliad</em> (51355), whose 310 argument lines were <code>verse-line</code> (fread/fread-issues#553, R8 of #506).</p>
 <h2>4.7</h2>
 <p><code>knownDivisionKind</code> gained <code>chant</code>: a numbered division of a long poem that the work itself heads &#34;Chant&#34;, the French word for one. Like <code>canto</code> and <code>stave</code>, it composes its word with the division&#39;s <code>number</code> (&#34;Chant 1&#34;), so the reader prints the word the book prints. It is its own kind rather than <code>book</code> or <code>canto</code> because neither English word fits every work that uses it: Homer&#39;s chants are books, and Dante&#39;s, Ariosto&#39;s and Byron&#39;s are cantos.</p>
 <p>The Gutenberg parser assigns it from a head that opens &#34;Chant&#34; and a numeral; an operator can assign it with <code>ingest-override set --kind chant</code>.</p>
