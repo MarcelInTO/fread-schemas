@@ -24,6 +24,16 @@ at or below its own, so an edit in flight is not invalidated by a tool upgrade.
 It refuses a *higher* minor, because that file may carry an attribute this
 build would silently drop.
 
+The `export-state` an import checks a file against fingerprints the work, not
+the build that wrote it: the version stamp and the comment at the head of the
+file are left out, so an older minor's export of a work that has not changed
+since still imports. One version difference does move it, deliberately: a
+minor that adds an attribute to the export changes the fingerprint of every
+work holding a value for it, and an older file of such a work is refused as
+stale, since it cannot carry the value. (Until 2026-10-11 the stamp was in the
+fingerprint, so every minor bump refused every export in flight; changing the
+fingerprint refused them once more. `fread/fread-issues#564`.)
+
 A consequence worth stating: the published `.../work/<major>/` alias
 always serves the newest schema in that major line, and because minors are
 additive it still validates every older file in the line. The exact
