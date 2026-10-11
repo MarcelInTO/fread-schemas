@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-  fread work — schema version 4.8.
+  fread work — schema version 4.9.
 
   The XML serialization of a WORK's structure: divisions, blocks, anchors and
   illustrations. Companion works use this same schema — a companion work is
@@ -8,7 +8,7 @@
   in another work, not in content shape. Layers and bridges get their own
   schemas alongside this one; they are shaped differently.
 
-  Published at https://schema.fread.now/work/4.8/fread-work.xsd and named there
+  Published at https://schema.fread.now/work/4.9/fread-work.xsd and named there
   by every export, so a validating editor finds it with no setup. Every version
   ever published stays at its own URL; the version history and what the two
   numbers promise are at https://schema.fread.now/work/.
@@ -254,9 +254,23 @@
     <xs:attribute name="caption" type="xs:string"/>
   </xs:complexType>
 
+  <!-- A sentence anchor of the block it is nested in, listed by the
+       plain-text projection only, and only on a work opted in to sentence
+       anchors (4.9). c0 and c1 are UTF-16 offsets into the block's plain
+       text, c1 exclusive; ref is the block's ref and ".s" and the sentence's
+       index in its block, from 0. Written by the export, never by hand: a
+       projection is read-only. -->
+  <xs:complexType name="sentence">
+    <xs:attribute name="anchor-id" type="uuid"                 use="required"/>
+    <xs:attribute name="ref"       type="xs:string"            use="required"/>
+    <xs:attribute name="c0"        type="xs:nonNegativeInteger" use="required"/>
+    <xs:attribute name="c1"        type="xs:nonNegativeInteger" use="required"/>
+  </xs:complexType>
+
   <xs:complexType name="block" mixed="true">
     <xs:sequence>
       <xs:element name="illustration" type="illustration" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="sentence"     type="sentence"     minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
     <xs:attribute name="id"        type="uuid"/>
     <xs:attribute name="ref"       type="xs:string"/>
@@ -333,6 +347,11 @@
       <xs:attribute name="export-scope" type="xs:string"/>
       <xs:attribute name="export-state" type="xs:string"/>
       <xs:attribute name="projection"   type="projection"/>
+      <!-- sentence-splitter names the splitter version a plain-text
+           projection's <sentence> elements were cut by (4.9): the work's
+           pinned one. Absent on an ordinary export, and on a work not opted
+           in to sentence anchors. -->
+      <xs:attribute name="sentence-splitter" type="xs:string"/>
       <xs:attribute name="title"        type="xs:string"/>
       <xs:attribute name="attribution"  type="xs:string"/>
       <xs:attribute name="rights-state" type="xs:string"/>

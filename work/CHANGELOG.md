@@ -34,6 +34,30 @@ Versions before 4.0 predate this rule — every change was breaking, because the
 importer compared the version string for exact equality. They are listed with a
 `.0` minor for consistency.
 
+## 4.9
+
+The plain-text projection lists each block's **sentence anchors**, on a
+work opted in to them: one `<sentence anchor-id ref c0 c1/>` per sentence,
+nested in its block after any `<illustration>`, in order of its index. `c0`
+and `c1` are UTF-16 offsets into the block's plain text, `c1` exclusive, and
+the ref is the block's ref and `.s` and the index, from 0 (`ch1.p3.s0`). The
+root names the splitter version that cut them, `sentence-splitter`
+(`fread-sentence/1`).
+
+A work is opted in by `ingest-work sentences`, which pins the splitter on
+`base_work.sentence_splitter` and mints the anchors. The text aligner reads
+them here, so a bridge row can end on an anchor the ingest keeps, rather
+than on a sentence the aligner cut for itself (TranslationBridges §9.2,
+fread/fread-issues#520).
+
+Only the projection carries them, because their offsets index the plain
+text and only the projection carries that. The authored export is
+unchanged, and so is its `export-state`: the projection still carries the
+authored tree's. A reader of an older projection sees none, and a reader
+that takes a block's text as its own text and the tails of its children
+(`(b.text or "") + "".join(c.tail or "" for c in b)`) reads the same text,
+since an export writes nothing between a block's children.
+
 ## 4.8
 
 `knownBlockKind` gained `argument-line`: one line of an argument set in
